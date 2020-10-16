@@ -7,14 +7,16 @@
   vars_files:
     - vars/server_vars.yml
   tasks:
-#TODO sudo adduser www-data {{ sitename }}
-#TODO systemctl restart php7.2-fpm.service
-#TODO in /var/www/{{ sitename }} sudo find . -type d -exec chmod 0755 {} \;
-#TODO in /var/www/{{ sitename }} sudo find . -type f -exec chmod 0644 {} \;
-#TODO Выпустить сертификат и поправить {{ sitename }}.conf на www
-#TODO создавать файлы логов
-#TODO ssh-key кривой
-#TODO Выпустить DKIM ключ, запихнуть в 3 файла, добавить в DNS записи sendonly._domainkey и v=spf1 mx ip4:109.68.215.79 ip6:2a03:6f00:4::6d44:d74f ~all
+
+# TODO Перезагрузить php-fpm:
+# systemctl restart php7.2-fpm.service
+#
+# TODO Выпустить SSL-сертификат:
+# certbot --nginx -d www.{{ sitename }}
+#
+# TODO Изменить блок от Lets Encrypt в {{ sitename }}.conf на return 301 https://{{ sitename }}$request_uri;
+#
+# TODO Выпустить DKIM ключ, запихнуть в 3 файла, добавить в DNS записи sendonly._domainkey и v=spf1 mx ip4:109.68.215.79 ip6:2a03:6f00:4::6d44:d74f ~all
 
 
 # Servers user configuration
@@ -129,8 +131,4 @@
     - name: Reload Nginx
       service:
         name: nginx
-        state: reloaded
-    - name: Reload php-fpm
-      service:
-        name: php7.2-fpm
         state: reloaded

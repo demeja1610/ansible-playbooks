@@ -7,17 +7,20 @@
   vars_files:
     - vars/server_vars.yml
 
-# TODO
-# Устанавливать certbot
+# TODO Установить certbot
 # sudo add-apt-repository ppa:certbot/certbot
 # sudo apt install python-certbot-nginx
 #
+# Копировать /root/.nvm в /etc/nvm для доступа всех пользователей на сервере
 # sudo cp -r /root/.nvm /etc/nvm
 #
 # Удалять /var/www/html
+# rm -rf /var/www/html
+#
+# Устанавливать postfix и opendkim
+# https://www.linuxbabe.com/mail-server/postfix-send-only-multiple-domains-ubuntu
 
-
-# Default configuration
+  # Default configuration
   tasks:
     - name: Install Prerequisites
       apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
