@@ -1,0 +1,123 @@
+##################################################
+# DO Community Playbooks: LEMP on Ubuntu 18.04
+##################################################
+---
+- hosts: all
+  become: true
+  vars_files:
+    - vars/server_vars.yml
+
+# TODO
+# Устанавливать certbot
+# sudo add-apt-repository ppa:certbot/certbot
+# sudo apt install python-certbot-nginx
+#
+# sudo cp -r /root/.nvm /etc/nvm
+#
+# Удалять /var/www/html
+
+
+# Default configuration
+  tasks:
+    - name: Install Prerequisites
+      apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
+      loop: [ 'aptitude' ]
+
+    - name: Install LEMP Packages
+      apt: name={{ item }} update_cache=yes state=latest
+      loop: [ 'nginx', 'mysql-server', 'python3-pymysql', 'php-fpm', 'php-mysql', 'php-gd', 'php-xml', 'php-mbstring', 'php-curl' ]
+
+    - name: Install System Preferences
+      apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
+      loop: [ 'vim', 'composer', 'git', 'curl', 'gnupg', 'zip', 'unzip', 'php-zip' ]
+
+
+# Nginx Configuration
+    - name: Removes "default" site
+      file:
+        path: "/etc/nginx/sites-enabled/default"
+        state: absent
+      notify: Reload Nginx
+
+
+# MySQL Configuration
+    - name: Sets the root password 
+      mysql_user: 
+        name: root
+        password: "{{ mysql_root_password }}"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Removes all anonymous user accounts
+      mysql_user:
+        name: ''
+        host_all: yes
+        state: absent
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+
+    - name: Removes the MySQL test database
+      mysql_db: 
+        name: test 
+        state: absent
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+
+
+# UFW Configuration
+    - name: "UFW - Allow HTTP on port {{ http_port }}"
+      ufw:
+        rule: allow
+        port: "{{ http_port }}"
+        proto: tcp
+
+
+# Frontend dependencies
+    - name: Install NVM
+      shell: >
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+      args:
+        creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+
+    - name: Install node from NVM
+      become: yes
+      become_user: root
+      shell: "source /root/.nvm/nvm.sh && nvm install 10.17.0" 
+      args:
+        executable: /bin/bash
+
+
+# Install yarn
+    - name: Ensure apt-transport-https is installed
+      apt:
+        name: apt-transport-https
+
+    - name: Add Yarn apt key
+      apt_key:
+        url: https://dl.yarnpkg.com/debian/pubkey.gpg
+
+    - name: Add Yarn repository
+      apt_repository:
+        repo: "deb https://dl.yarnpkg.com/debian/ stable main"
+        filename: yarn
+
+    - name: Install Yarn
+      become: true
+      apt:
+        update_cache: yes
+        name: yarn
+        install_recommends: no
+
+    - name: Copy /root/.nvm to /etc/nvm
+      copy: src=/root/.nvm/ dest=/etc/nvm/ remote_src=yes directory_mode=yes
+      become: true
+
+  handlers:
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded
+
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted

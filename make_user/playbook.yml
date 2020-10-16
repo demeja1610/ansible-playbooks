@@ -1,0 +1,102 @@
+##################################################
+# DO Community Playbooks: LEMP on Ubuntu 18.04
+##################################################
+---
+- hosts: all
+  become: true
+  vars_files:
+    - vars/server_vars.yml
+  tasks:
+#TODO sudo adduser www-data {{ sitename }}
+#TODO systemctl restart php7.2-fpm.service
+#TODO in /var/www/{{ sitename }} sudo find . -type d -exec chmod 0755 {} \;
+#TODO in /var/www/{{ sitename }} sudo find . -type f -exec chmod 0644 {} \;
+#TODO Выпустить сертификат и поправить {{ sitename }}.conf на www
+#TODO создавать файлы логов
+#TODO ssh-key кривой
+#TODO Выпустить DKIM ключ, запихнуть в 3 файла, добавить в DNS записи sendonly._domainkey и v=spf1 mx ip4:109.68.215.79 ip6:2a03:6f00:4::6d44:d74f ~all
+
+
+# Servers user configuration
+    - name: Create web path
+      file:
+        path: "/var/www/{{ sitename }}/data/www/{{ sitename }}"
+        state: directory
+
+    - name: Create user group
+      group:
+        name: "{{ sitename }}"
+        state: present
+
+    - name: Create user
+      user:
+        name: "{{ sitename }}"
+        shell: /bin/bash
+        group: "{{ sitename }}"
+        create_home: yes
+        home: "/var/www/{{ sitename }}/data"
+        password: "{{ shortname }}8Jsjg1Q"
+        generate_ssh_key: yes
+        ssh_key_bits: 2048
+        ssh_key_file: .ssh/id_rsa
+
+    - name: Create bashrc file
+      template:
+        src: "templates/.bashrc"
+        dest: "/var/www/{{ sitename }}/data"
+
+
+# Nginx Configuration
+    - name: Sets Nginx conf file
+      template:
+        src: "templates/nginx.conf.j2"
+        dest: "/etc/nginx/sites-available/{{ sitename }}"
+
+    - name: Enable new site
+      file:
+        src: "/etc/nginx/sites-available/{{ sitename }}"
+        dest: "/etc/nginx/sites-enabled/{{ sitename }}"
+        state: link
+      notify: Reload Nginx
+
+
+# FPM Configuration
+    - name: Make FPM socket
+      template:
+        src: "templates/pool.conf.j2"
+        dest: "/etc/php/7.2/fpm/pool.d/{{ sitename }}.conf"
+
+
+# MySQL database
+    - name: Creates database for user
+      mysql_db:
+        name: "{{ shortname }}"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+      tags: [ mysql ]
+
+    - name: Create MySQL user for site
+      mysql_user:
+        name: "{{ shortname }}"
+        password: "{{ mysql_user_password }}"
+        priv: "{{ shortname }}.*:ALL"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+      tags: [ mysql ]
+
+
+# Chown right to user 
+    - name: Create web path
+      file:
+        path: "/var/www/{{ sitename }}"
+        owner: "{{ sitename }}"
+        group: "{{ sitename }}"
+        recurse: true
+
+  handlers:
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded
