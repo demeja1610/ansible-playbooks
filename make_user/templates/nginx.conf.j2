@@ -2,7 +2,7 @@ server {
         listen 80;
         root /var/www/{{ sitename }}/data/www/{{ sitename }}/web;
         index index.php index.html index.htm;
-        server_name {{ sitename }};
+        server_name www.{{ sitename }} {{ sitename }};
 
         location / {
             try_files $uri $uri/ /index.php?$args;
