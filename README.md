@@ -25,12 +25,7 @@
 <br/><br/>
 
 ## TODO сайт
-1. Добавлять www-data в группу пользователя
-2. Перезагружать php-fpm
-3. Внутри /var/www/{{ sitename }} <code>sudo find . -type d -exec chmod 0755 {} \;</code>
-4. Внутри /var/www/{{ sitename }} <code>sudo find . -type f -exec chmod 0644 {} \;</code>
-5. Создавать файлы логов
-6. В конфиге nginx указать путь до логов
+1. Перезагружать php-fpm
 <br/><br/>
 
 ## TODO Написать плейбук для выпуска сертификатов

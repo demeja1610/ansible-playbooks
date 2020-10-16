@@ -40,6 +40,12 @@
         ssh_key_bits: 2048
         ssh_key_file: .ssh/id_rsa
 
+    - name: Add www-data to user group
+      user:
+        name: "www-data"
+        groups: "{{ sitename }}"
+        append: yes
+
     - name: Create bashrc file
       template:
         src: "templates/.bashrc"
@@ -59,6 +65,29 @@
         state: link
       notify: Reload Nginx
 
+    - name: Creates logs
+      file:
+        path: "/var/log/nginx/{{ sitename }}"
+        state: directory
+        owner: www-data
+        group: adm
+        mode: 0775
+
+    - name: Touch a nginx access log
+      file:
+        path: "/var/log/nginx/{{ sitename }}/access.log"
+        state: touch
+        mode: u=rwx,g=rx,o=rx
+        owner: www-data
+        group: adm
+
+    - name: Touch a nginx error log
+      file:
+        path: "/var/log/nginx/{{ sitename }}/error.log"
+        state: touch
+        mode: u=rwx,g=rx,o=rx
+        owner: www-data
+        group: adm
 
 # FPM Configuration
     - name: Make FPM socket
@@ -93,10 +122,15 @@
         path: "/var/www/{{ sitename }}"
         owner: "{{ sitename }}"
         group: "{{ sitename }}"
-        recurse: true
+        recurse: yes
+
 
   handlers:
     - name: Reload Nginx
       service:
         name: nginx
+        state: reloaded
+    - name: Reload php-fpm
+      service:
+        name: php7.2-fpm
         state: reloaded
