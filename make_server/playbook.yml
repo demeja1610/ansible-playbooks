@@ -7,18 +7,18 @@
   vars_files:
     - vars/server_vars.yml
 
-# TODO Установить certbot
-# sudo apt install python-certbot-nginx
-# Провести базовую настройку certbot
-#
-# Копировать /root/.nvm в /etc/nvm для доступа всех пользователей на сервере
-# sudo cp -r /root/.nvm /etc/nvm
-#
-# Удалять /var/www/html
-# rm -rf /var/www/html
-#
-# Устанавливать postfix и opendkim
-# https://www.linuxbabe.com/mail-server/postfix-send-only-multiple-domains-ubuntu
+  # TODO Установить certbot
+  # sudo apt install python-certbot-nginx
+  # Провести базовую настройку certbot
+  #
+  # Копировать /root/.nvm в /etc/nvm для доступа всех пользователей на сервере
+  # sudo cp -r /root/.nvm /etc/nvm
+  #
+  # Удалять /var/www/html
+  # rm -rf /var/www/html
+  #
+  # Устанавливать postfix и opendkim
+  # https://www.linuxbabe.com/mail-server/postfix-send-only-multiple-domains-ubuntu
 
   # Default configuration
   tasks:
@@ -44,8 +44,8 @@
 
 
 # MySQL Configuration
-    - name: Sets the root password 
-      mysql_user: 
+    - name: Sets the root password
+      mysql_user:
         name: root
         password: "{{ mysql_root_password }}"
         login_unix_socket: /var/run/mysqld/mysqld.sock
@@ -59,8 +59,8 @@
         login_password: "{{ mysql_root_password }}"
 
     - name: Removes the MySQL test database
-      mysql_db: 
-        name: test 
+      mysql_db:
+        name: test
         state: absent
         login_user: root
         login_password: "{{ mysql_root_password }}"
@@ -84,7 +84,7 @@
     - name: Install node from NVM
       become: yes
       become_user: root
-      shell: "source /root/.nvm/nvm.sh && nvm install 10.17.0" 
+      shell: "source /root/.nvm/nvm.sh && nvm install 10.17.0"
       args:
         executable: /bin/bash
 
