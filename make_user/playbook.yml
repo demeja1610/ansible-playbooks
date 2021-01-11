@@ -12,7 +12,7 @@
 # systemctl restart php7.2-fpm.service
 #
 # TODO Выпустить SSL-сертификат:
-# certbot --nginx -d www.{{ sitename }}
+# certbot --nginx -d {{ sitename }} -d www.{{ sitename }}
 #
 # TODO Изменить блок от Lets Encrypt в {{ sitename }}.conf на return 301 https://{{ sitename }}$request_uri;
 #
