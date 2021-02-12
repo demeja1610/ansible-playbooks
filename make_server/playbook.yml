@@ -7,9 +7,7 @@
   vars_files:
     - vars/server_vars.yml
 
-  # TODO Установить certbot
-  # sudo apt install python-certbot-nginx
-  # Провести базовую настройку certbot
+  # TODO
   #
   # Копировать /root/.nvm в /etc/nvm для доступа всех пользователей на сервере
   # sudo cp -r /root/.nvm /etc/nvm
@@ -32,7 +30,7 @@
 
     - name: Install System Preferences
       apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
-      loop: [ 'vim', 'composer', 'git', 'curl', 'gnupg', 'zip', 'unzip', 'php-zip' ]
+      loop: [ 'vim', 'composer', 'git', 'curl', 'gnupg', 'zip', 'unzip', 'php-zip', 'python-certbot-nginx' ]
 
 
 # Nginx Configuration
