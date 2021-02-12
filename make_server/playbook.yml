@@ -7,14 +7,6 @@
   vars_files:
     - vars/server_vars.yml
 
-  # TODO
-  #
-  # Удалять /var/www/html
-  # rm -rf /var/www/html
-  #
-  # Устанавливать postfix и opendkim
-  # https://www.linuxbabe.com/mail-server/postfix-send-only-multiple-domains-ubuntu
-
   # Default configuration
   tasks:
     - name: Install Prerequisites
@@ -37,6 +29,10 @@
         state: absent
       notify: Reload Nginx
 
+    - name: Removes "default" site root
+      file:
+        path: "/var/www/html"
+        state: absent
 
 # MySQL Configuration
     - name: Sets the root password
