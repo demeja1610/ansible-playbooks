@@ -19,9 +19,7 @@
 <br/><br/>
 
 ## TODO сервер
-1. Устанавливать certbot
-2. Копировать /root/.nvm в /etc/nvm для доступа всех пользователей на сервере
-3. Устанавливать postfix и opendkim
+1. Устанавливать postfix и opendkim
 <br/><br/>
 
 ## TODO сайт

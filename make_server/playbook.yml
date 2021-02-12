@@ -9,9 +9,6 @@
 
   # TODO
   #
-  # Копировать /root/.nvm в /etc/nvm для доступа всех пользователей на сервере
-  # sudo cp -r /root/.nvm /etc/nvm
-  #
   # Удалять /var/www/html
   # rm -rf /var/www/html
   #
@@ -107,6 +104,9 @@
         update_cache: yes
         name: yarn
         install_recommends: no
+
+    - name: Copy NVM files to all users
+      command: cp -r /root/.nvm /etc/nvm
 
   handlers:
     - name: Reload Nginx
