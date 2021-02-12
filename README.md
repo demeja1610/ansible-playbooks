@@ -18,10 +18,6 @@
 <code>ansible-playbook playbook.yml -l domain_name.com</code> - domain_name.com берем из /etc/ansible/hosts
 <br/><br/>
 
-## TODO сервер
-1. Устанавливать postfix и opendkim
-<br/><br/>
-
 ## TODO сайт
 1. Перезагружать php-fpm
 <br/><br/>
