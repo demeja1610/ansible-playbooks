@@ -18,6 +18,9 @@
 <code>ansible-playbook playbook.yml -l domain_name.com</code> - domain_name.com берем из /etc/ansible/hosts
 <br/><br/>
 
+## Если ошибка при добавлении make_users
+https://unix.stackexchange.com/questions/410579/change-the-python3-default-version-in-ubuntu
+
 ## TODO сайт
 1. Перезагружать php-fpm
 <br/><br/>
