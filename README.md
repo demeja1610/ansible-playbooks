@@ -21,6 +21,9 @@
 ## Если ошибка при добавлении make_users
 https://unix.stackexchange.com/questions/410579/change-the-python3-default-version-in-ubuntu
 
+## Если необходимо обновить php до php7.4
+https://obu4alka.ru/install-php7-4-ubuntu-server-nginx-php-fpm.html
+
 ## TODO сайт
 1. Перезагружать php-fpm
 <br/><br/>
