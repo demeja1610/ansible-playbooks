@@ -1,5 +1,5 @@
 ---
-sitename: "finikolive.com"
-shortname: "finikolivecom"
-mysql_root_password: "2w9xj2iwhtsRnxG72"
-mysql_user_password: "mfinikolivecoSj791lamb"
+sitename: "sitename.com"
+shortname: "sitenamecom"
+mysql_root_password: "MYSQL_ROOT_PASSWORD"
+mysql_user_password: "MYSQL_PASSWORD"
