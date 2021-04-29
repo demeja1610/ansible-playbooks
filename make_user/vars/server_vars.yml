@@ -1,5 +1,5 @@
 ---
-sitename: "example.com"
-shortname: "examplecom"
-mysql_root_password: "ROOT_PASSWORD"
-mysql_user_password: "USER_PASSWORD"
+sitename: "sitename.com"
+shortname: "sitenamecom"
+mysql_root_password: "MYSQL_ROOT_PASSWORD"
+mysql_user_password: "MYSQL_PASSWORD"
