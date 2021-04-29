@@ -1,4 +1,4 @@
 ---
-mysql_root_password: "PASSWORD"
+mysql_root_password: "mn3Dakjs234EdjahtwWSGR"
 http_port: "80"
 ansible_python_interpreter: "/usr/bin/python3"

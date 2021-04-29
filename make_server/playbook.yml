@@ -75,7 +75,7 @@
     - name: Install node from NVM
       become: yes
       become_user: root
-      shell: "source /root/.nvm/nvm.sh && nvm install 10.17.0"
+      shell: "source /root/.nvm/nvm.sh && nvm install 10.17.0 && nvm install 12.19.0"
       args:
         executable: /bin/bash
 
